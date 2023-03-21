@@ -1,0 +1,41 @@
+﻿<Window x:Class="Level_Checker.MyForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Level_Checker"
+             mc:Ignorable="d" 
+             d:DesignHeight="550" d:DesignWidth="500">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="Level Checker" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="48" FontWeight="Bold"/>
+        <Label Grid.Row="1" Content="Select Level to Check:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
+        <ComboBox x:Name="cmb_LevelsList" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="450" Height="40"/>
+        <Label Grid.Row="3" Content="Select Color" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="18"/>
+        <StackPanel Grid.Row="4" Orientation="Horizontal"  >
+            <RadioButton x:Name="rdl_Red" Content="Red" Margin="0,0,30,0" FontSize="18" VerticalContentAlignment="Center"/>
+            <RadioButton x:Name="rdl_Green" Content="Green" Margin="0,0,30,0" FontSize="18" VerticalContentAlignment="Center"/>
+            <RadioButton x:Name="rdl_Blue" Content="Blue" Margin="0,0,30,0" FontSize="18" VerticalContentAlignment="Center"/>
+            <RadioButton x:Name="rdl_Yellow" Content="Yellow" Margin="0,0,20,0" FontSize="18" VerticalContentAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="5" Orientation="Vertical" VerticalAlignment="Center">
+            <Label Content="Select Category to Check:" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="18" Margin="0,0,0,10"/>
+            <CheckBox x:Name="chk_Walls" Content="Walls" Margin="0,0,0,20" FontSize="18" VerticalContentAlignment="Center"/>
+            <CheckBox x:Name="chk_Columns" Content="Columns" Margin="0,0,0,20" FontSize="18" VerticalContentAlignment="Center"/>
+            <CheckBox x:Name="chk_Framing" Content="Framing" FontSize="18" VerticalContentAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btn_Reset" Content="Reset" Margin="0,0,10,0" Width="100" Height="30" Click="btn_Reset_Click"/>
+            <Button x:Name="btn_Apply" Content="Apply" Width="100" Height="30" Click="btn_Apply_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
