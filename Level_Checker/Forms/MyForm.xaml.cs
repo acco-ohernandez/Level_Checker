@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,9 +23,11 @@ namespace Level_Checker
     /// </summary>
     public partial class MyForm : Window
     {
-        public MyForm()
+        ExternalEvent myEvent;
+        public MyForm(ExternalEvent _event)
         {
             InitializeComponent();
+            myEvent = _event;
         }
 
         private void btn_Reset_Click(object sender, RoutedEventArgs e)
@@ -33,7 +37,9 @@ namespace Level_Checker
 
         private void btn_Apply_Click(object sender, RoutedEventArgs e)
         {
-
+            myEvent.Raise();
         }
     }
+
+    
 }

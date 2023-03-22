@@ -59,6 +59,8 @@
     <Compile Include="App.cs" />
     <Compile Include="Classes\ButtonDataClass.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="EventAction.cs" />
+    <Compile Include="EventAction1.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

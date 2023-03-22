@@ -1,6 +1,7 @@
 #region Namespaces
 using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
+//using Autodesk.Revit.Creation;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
@@ -27,9 +28,12 @@ namespace Level_Checker
             Document doc = uidoc.Document;
 
             // put any code needed for the form here
+            EventAction myAction = new EventAction();
+            ExternalEvent myEvent = ExternalEvent.Create(myAction);
+
 
             // open form
-            MyForm currentForm = new MyForm()
+            MyForm currentForm = new MyForm(myEvent)
             {
                 Width = 500,
                 Height = 550,
