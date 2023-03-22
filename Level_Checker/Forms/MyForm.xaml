@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Content="Level Checker" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="48" FontWeight="Bold"/>
         <Label Grid.Row="1" Content="Select Level to Check:" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
-        <ComboBox x:Name="cmb_LevelsList" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="450" Height="40"/>
+        <ComboBox x:Name="cmb_LevelsList" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="450" Height="40" />
         <Label Grid.Row="3" Content="Select Color" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="18"/>
         <StackPanel Grid.Row="4" Orientation="Horizontal"  >
             <RadioButton x:Name="rdl_Red" Content="Red" Margin="0,0,30,0" FontSize="18" VerticalContentAlignment="Center"/>
