@@ -4,6 +4,8 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -18,29 +20,125 @@ namespace Level_Checker
             UIDocument uidoc = uiapp.ActiveUIDocument;
             Document Doc = uidoc.Document;
 
+            try
+            {
+                // Get the selectLevel name from the Globals variable
+                string selectedLevel = Globals.selectedLevel;
+                if (selectedLevel != null)
+                {
+                    List<Level> levelsList = Globals.levelsList;
+                    // Find the element with the selectedLevel name
+                    Level level = levelsList.FirstOrDefault(x => x.Name == selectedLevel);
 
+                    // Get the element id for the selected Level
+                    ElementLevelFilter filter = new ElementLevelFilter(level.Id);
+
+                    List<ElementId> elementIDs = new List<ElementId>();
+                    GetSelectedLevelElementsIDs(Doc, filter, elementIDs);
+
+                    // Color the selected Elements
+                    Color newColor = Globals.selectedColor;
+
+                    if (newColor != null)
+                    {
+                        if (Globals.elemChkboxSelected)
+                        {
+                            OverrideGraphicSettings newSettings = new OverrideGraphicSettings();
+                            newSettings.SetCutForegroundPatternColor(newColor);
+                            newSettings.SetSurfaceForegroundPatternColor(newColor);
+
+                            FillPatternElement curPatt = GetFillPatternByName(Doc, "<Solid fill>");
+                            newSettings.SetCutForegroundPatternId(curPatt.Id);
+                            newSettings.SetSurfaceForegroundPatternId(curPatt.Id);
+
+                            using (Transaction t = new Transaction(Doc))
+                            {
+                                t.Start("Change element colors");
+
+                                foreach (ElementId curId in elementIDs)
+                                {
+                                    Doc.ActiveView.SetElementOverrides(curId, newSettings);
+                                }
+
+                                t.Commit();
+                            }
+                            // Notify the user how many elements were updated
+                            //TaskDialog.Show("Info", $"Updated {elementIDs.Count.ToString()} elements.");
+                            Globals.lbl_InfoContent = $"Updated {elementIDs.Count.ToString()} elements.";
+                        }
+                        else
+                        { Globals.lbl_InfoContent = "Select a Category CheckBox!"; }
+                    }
+                    else
+                    { Globals.lbl_InfoContent = "Please Select a Color!"; }
+                }
+                else
+                { Globals.lbl_InfoContent = "Please Select a Level!"; }
+            }
+            catch (Exception e)
+            {
+
+                Globals.lbl_InfoContent = "Error: Check DebugLog";
+                Debug.Print(e.Message);
+            }
+        }
+
+        private static void GetSelectedLevelElementsIDs(Document Doc, ElementLevelFilter filter, List<ElementId> elementIDs)
+        {
+            // if no checkbox is selected this global variable will remain false
+            Globals.elemChkboxSelected = false;
             
+            if (Globals.wallsIsChecked == true)
+            {
+                // Define a Filtered Element Collector
+                FilteredElementCollector collector = new FilteredElementCollector(Doc);
 
+                // Collect only the Walls on selected Level defined by the filter
+                collector.WherePasses(filter).OfCategory(BuiltInCategory.OST_Walls);
+                foreach (var elemId in collector)
+                {
+                    elementIDs.Add(elemId.Id);
+                }
+                Globals.elemChkboxSelected = true;
+            }
 
-            //List<ElementId> selectedElems =  uidoc.Selection.GetElementIds().ToList();
-            //TaskDialog.Show("Test",$"You selected {selectedElems.Count} elements");
+            if (Globals.columnsIsChecked == true)
+            {
+                // Define a Filtered Element Collector
+                FilteredElementCollector collector = new FilteredElementCollector(Doc);
 
+                // Collect only the Columns on selected Level defined by the filter
+                collector.WherePasses(filter).OfCategory(BuiltInCategory.OST_Columns);
+                foreach (var elemId in collector)
+                {
+                    elementIDs.Add(elemId.Id);
+                }
+                Globals.elemChkboxSelected = true;
+            }
 
-            //FilteredElementCollector collector = new FilteredElementCollector(Doc);
-            //collector.OfCategory(BuiltInCategory.OST_TitleBlocks);
+            if (Globals.framingIsChecked == true)
+            {
+                // Define a Filtered Element Collector
+                FilteredElementCollector collector = new FilteredElementCollector(Doc);
 
-            //using (Transaction t = new Transaction(Doc))
-            //{
-            //    t.Start("Create new sheet");
+                // Collect only the StructuralFraming on selected Level defined by the filter
+                collector.WherePasses(filter).OfCategory(BuiltInCategory.OST_StructuralFraming);
+                foreach (var elemId in collector)
+                {
+                    elementIDs.Add(elemId.Id);
+                }
+                Globals.elemChkboxSelected = true;
+            }
 
-            //    ViewSheet newSheet;
+        }
 
+        private FillPatternElement GetFillPatternByName(Document doc, string name)
+        {
+            FillPatternElement curFPE = null;
 
-            //    newSheet = ViewSheet.Create(Doc, collector.FirstElementId());
+            curFPE = FillPatternElement.GetFillPatternElementByName(doc, FillPatternTarget.Drafting, name);
 
-
-            //    t.Commit();
-            //}
+            return curFPE;
         }
 
         public string GetName()
@@ -82,4 +180,5 @@ namespace Level_Checker
             return "EventAction2";
         }
     }
+
 }

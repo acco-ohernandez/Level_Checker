@@ -24,12 +24,24 @@ namespace Level_Checker
     public partial class MyForm : Window
     {
 
-        ExternalEvent myEvent;
-        ExternalEvent myEvent_Reset;
+        ExternalEvent ExternalEvent_ElementColorChange;
+        ExternalEvent ExternalEvent_Reset;
+        
         public MyForm(ExternalEvent _event, ExternalEvent _event_Reset, Document Doc)
         {
+            
             InitializeComponent();
+            
+            // add the events to the form global variables
+            ExternalEvent_ElementColorChange = _event;
+            ExternalEvent_Reset = _event_Reset;
 
+            // Add the all the Levels to the ComboBox and add them to the Globals.levelsList variable 
+            AddLevelNamesToComboBox(Doc);
+        }
+
+        private void AddLevelNamesToComboBox(Document Doc)
+        {
             //Create a List of Levels
             List<Level> levels = new List<Level>();
 
@@ -50,22 +62,35 @@ namespace Level_Checker
             {
                 cmb_LevelsList.Items.Add(level.Name);
             }
-
-
-            myEvent = _event;
-            myEvent_Reset = _event_Reset;
         }
 
         private void btn_Reset_Click(object sender, RoutedEventArgs e)
         {
-            myEvent_Reset.Raise();
+            // Reset All Element colors event
+            ExternalEvent_Reset.Raise();
         }
 
         private void btn_Apply_Click(object sender, RoutedEventArgs e)
         {
-            myEvent.Raise();
+            // Update the Globals.selectedLevel variable
+            if (cmb_LevelsList.SelectedItem != null) { Globals.selectedLevel = cmb_LevelsList.SelectedItem as string; }else { Globals.selectedLevel = null; }
+
+            // Update the Globals.selectedColor variable
+            if (rdl_Red.IsChecked == true)         Globals.selectedColor = new Autodesk.Revit.DB.Color(255, 0, 0);//"Red";
+            else if (rdl_Green.IsChecked == true)  Globals.selectedColor = new Autodesk.Revit.DB.Color(0, 255, 0);//"Green";
+            else if (rdl_Blue.IsChecked == true)   Globals.selectedColor = new Autodesk.Revit.DB.Color(0, 0, 255);//"Blue";
+            else if (rdl_Yellow.IsChecked == true) Globals.selectedColor = new Autodesk.Revit.DB.Color(255, 255, 0);//"yellow";
+            else  Globals.selectedColor = null;
+
+            // Update the Globals. walls, columns, and framing variable
+            if (chk_Walls.IsChecked   == true) { Globals.wallsIsChecked   = true; } else Globals.wallsIsChecked   = false;
+            if (chk_Columns.IsChecked == true) { Globals.columnsIsChecked = true; } else Globals.columnsIsChecked = false;
+            if (chk_Framing.IsChecked == true) { Globals.framingIsChecked = true; } else Globals.framingIsChecked = false;
+
+            // call the event 
+            ExternalEvent_ElementColorChange.Raise();
+            lbl_Info.Content = Globals.lbl_InfoContent;
         }
     }
 
-    
 }

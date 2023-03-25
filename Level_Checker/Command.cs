@@ -28,23 +28,33 @@ namespace Level_Checker
             Application app = uiapp.Application;
             Document doc = uidoc.Document;
 
-            // put any code needed for the form here
+            // Action and Event 1 Instances
             EventAction myAction = new EventAction();
             ExternalEvent myEvent = ExternalEvent.Create(myAction);
 
+            // Action and Event 2 Instances
             EventAction_ResetAllElements myAction_Reset = new EventAction_ResetAllElements();
             ExternalEvent myEvent_Reset = ExternalEvent.Create(myAction_Reset);
 
 
             // open form
+            //MyForm currentForm = new MyForm(myEvent, myEvent_Reset, doc)
+            //{
+            //    Width = 500,
+            //    Height = 550,
+            //    WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen,
+            //    Topmost = true,
+            //};
             MyForm currentForm = new MyForm(myEvent, myEvent_Reset, doc)
             {
+                Top = 130,
                 Width = 500,
                 Height = 550,
-                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen,
+                Left = System.Windows.SystemParameters.PrimaryScreenWidth - 500,
+
+                WindowStartupLocation = System.Windows.WindowStartupLocation.Manual,
                 Topmost = true,
             };
-
 
 
             //currentForm.ShowDialog();

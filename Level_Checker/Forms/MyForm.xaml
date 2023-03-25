@@ -33,9 +33,17 @@
             <CheckBox x:Name="chk_Columns" Content="Columns" Margin="0,0,0,20" FontSize="18" VerticalContentAlignment="Center"/>
             <CheckBox x:Name="chk_Framing" Content="Framing" FontSize="18" VerticalContentAlignment="Center"/>
         </StackPanel>
-        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="btn_Reset" Content="Reset" Margin="0,0,10,0" Width="100" Height="30" Click="btn_Reset_Click"/>
-            <Button x:Name="btn_Apply" Content="Apply" Width="100" Height="30" Click="btn_Apply_Click"/>
-        </StackPanel>
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="220"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" x:Name="lbl_Info" Content="" FontSize="16" FontWeight="Bold" Foreground="#FFEC7701" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btn_Reset" Content="Reset" Margin="0,0,10,0" Width="100" Height="30" Click="btn_Reset_Click"/>
+                <Button x:Name="btn_Apply" Content="Apply" Width="100" Height="30" Click="btn_Apply_Click"/>
+            </StackPanel>
+        </Grid>
+        
     </Grid>
 </Window>
